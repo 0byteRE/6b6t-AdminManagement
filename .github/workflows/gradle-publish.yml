@@ -63,7 +63,7 @@ jobs:
         run: mvn clean package install --batch-mode --update-snapshots
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: InvSee++-build
           path: |
