@@ -62,6 +62,7 @@ public class InvseePlusPlus extends JavaPlugin implements com.janboerman.invsee.
     private boolean dirtyConfig = false;
 
     private Metrics bstats;
+    private Scheduler scheduler;
 
     public InvseePlusPlus() {
         boolean asyncTabCompleteEvent;
@@ -81,6 +82,7 @@ public class InvseePlusPlus extends JavaPlugin implements com.janboerman.invsee.
 
         //initialisation
         final Scheduler scheduler = makeScheduler(this);
+        this.scheduler = scheduler;
         final NamesAndUUIDs lookup = new NamesAndUUIDs(this, scheduler);
         final OpenSpectatorsCache cache = new OpenSpectatorsCache();
         Setup setup = Setup.setup(this, scheduler, lookup, cache);
@@ -169,6 +171,7 @@ public class InvseePlusPlus extends JavaPlugin implements com.janboerman.invsee.
 
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new SpectatorInventoryEditListener(), this);
+        pluginManager.registerEvents(new com.janboerman.invsee.spigot.chatlogger.ChatLoggerListener(this, scheduler), this);
 
         if (offlinePlayerSupport() && tabCompleteOfflinePlayers()) {
             if (asyncTabcompleteEvent) {
@@ -211,6 +214,13 @@ public class InvseePlusPlus extends JavaPlugin implements com.janboerman.invsee.
      */
     public InvseeAPI getApi() {
         return api;
+    }
+
+    /**
+     * Access to the scheduler used by this plugin.
+     */
+    public Scheduler getScheduler() {
+        return scheduler;
     }
 
     /**
